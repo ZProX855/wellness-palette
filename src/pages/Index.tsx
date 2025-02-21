@@ -9,14 +9,16 @@ import {
   Calculator,
   ArrowRight,
   Sparkles,
-  Image,
-  Brain,
-  Palette,
+  Camera,
+  Calendar,
+  Clock,
+  UtensilsCrossed,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { RunwareService } from "@/services/RunwareService";
+import { toast } from "sonner";
 
 const FeatureCard = ({
   icon: Icon,
@@ -87,27 +89,27 @@ const features = [
     description: "Visualize your wellness journey with charts",
   },
   {
-    icon: Image,
-    title: "AI Meal Visualization",
-    description: "Generate appetizing images of healthy meals with AI",
+    icon: Camera,
+    title: "Meal Photo Journal",
+    description: "Document your meals with photos to track eating habits",
     isNew: true,
   },
   {
-    icon: Brain,
-    title: "Smart Meal Planning",
-    description: "Get AI-powered personalized meal suggestions",
+    icon: Calendar,
+    title: "Meal Planning Calendar",
+    description: "Plan your weekly meals and generate shopping lists",
     isNew: true,
   },
   {
-    icon: Palette,
-    title: "Wellness Vision Board",
-    description: "Create AI-generated vision boards for motivation",
+    icon: Clock,
+    title: "Habit Streak Tracker",
+    description: "Build healthy habits by tracking daily streaks",
     isNew: true,
   },
   {
-    icon: Sparkles,
-    title: "AI Wellness Coach",
-    description: "Get personalized wellness advice from AI",
+    icon: UtensilsCrossed,
+    title: "Recipe Collection",
+    description: "Save and organize your favorite healthy recipes",
     isNew: true,
   },
 ];
