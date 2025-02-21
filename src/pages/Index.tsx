@@ -17,12 +17,19 @@ const FeatureCard = ({
   icon: Icon,
   title,
   description,
+  isNew,
 }: {
   icon: any;
   title: string;
   description: string;
+  isNew?: boolean;
 }) => (
-  <Card className="p-6 hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm border-wellness-mint group">
+  <Card className="relative p-6 hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm border-wellness-mint group">
+    {isNew && (
+      <span className="absolute -top-2 -right-2 bg-wellness-forest text-white px-2 py-1 rounded-full text-xs">
+        New!
+      </span>
+    )}
     <div className="flex flex-col items-center text-center gap-4">
       <div className="p-3 rounded-full bg-wellness-mint text-wellness-forest group-hover:bg-wellness-forest group-hover:text-white transition-colors duration-300">
         <Icon size={24} />
@@ -37,22 +44,46 @@ const features = [
   {
     icon: Salad,
     title: "Compare Foods",
-    description: "Make healthier choices by comparing nutritional values",
+    description: "Make informed choices by comparing nutritional values of different foods",
   },
   {
     icon: Heart,
     title: "Track Nutrition",
-    description: "Get detailed nutrition facts for your meals",
+    description: "Monitor your daily intake with detailed nutrition tracking",
   },
   {
     icon: Scale,
     title: "BMI Calculator",
-    description: "Monitor your health with our BMI tracking tool",
+    description: "Calculate and track your BMI progress over time",
   },
   {
     icon: ChefHat,
     title: "Healthy Recipes",
-    description: "Discover delicious and nutritious meal ideas",
+    description: "Discover and save nutritious meal ideas",
+  },
+  {
+    icon: Calculator,
+    title: "Calorie Counter",
+    description: "Track your daily calorie intake and set goals",
+    isNew: true,
+  },
+  {
+    icon: Heart,
+    title: "Wellness Journal",
+    description: "Record your daily wellness activities and mood",
+    isNew: true,
+  },
+  {
+    icon: Leaf,
+    title: "Meditation Timer",
+    description: "Set timers for your mindfulness practice",
+    isNew: true,
+  },
+  {
+    icon: Scale,
+    title: "Progress Tracker",
+    description: "Visualize your wellness journey with charts",
+    isNew: true,
   },
 ];
 
@@ -85,14 +116,14 @@ const Index = () => {
               <Leaf className="w-6 h-6 text-wellness-forest" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-wellness-forest mb-6">
-              Welcome to Wellness Tracker
+              Your Complete Wellness Journey
             </h1>
             <p className="text-xl text-wellness-leaf mb-8 max-w-2xl mx-auto">
-              Your ultimate companion for health and nutrition guidance. Start your
-              journey to a healthier life today.
+              Transform your lifestyle with our comprehensive wellness tracking tools.
+              Start your journey to a healthier, happier you today.
             </p>
             <Button className="bg-wellness-forest text-white hover:bg-wellness-leaf transition-colors">
-              Get Started
+              Begin Your Journey
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </motion.div>
@@ -102,6 +133,9 @@ const Index = () => {
       {/* Features Grid */}
       <section className="py-20 px-4 bg-gradient-to-b from-wellness-mint/30 to-white">
         <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-wellness-forest text-center mb-12">
+            Everything You Need for Your Wellness Journey
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <motion.div
@@ -174,14 +208,14 @@ const Index = () => {
       <section className="py-20 px-4 bg-wellness-forest text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Start Your Wellness Journey?
+            Start Your Wellness Journey Today
           </h2>
           <p className="text-lg mb-8 opacity-90">
             Join thousands of others who have transformed their lives with our
-            comprehensive wellness tracking tools.
+            comprehensive wellness tracking tools. All the features you need in one place.
           </p>
           <Button className="bg-white text-wellness-forest hover:bg-wellness-mint transition-colors">
-            Start Tracking Now
+            Get Started Now
           </Button>
         </div>
       </section>
