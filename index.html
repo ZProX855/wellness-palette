@@ -1,18 +1,113 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>wellness-palette</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-    <meta property="og:image" content="/og-image.png" />
-  </head>
-
-  <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness Tracker</title>
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Wellness Palette</h1>
+            <p class="text-lg text-gray-600">Track your wellness journey, one step at a time</p>
+        </header>
+
+        <!-- Quick Add Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Quick Track</h2>
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="number" id="waterIntake" placeholder="Water (glasses)" class="flex-1 p-2 border rounded">
+                <input type="number" id="sleepHours" placeholder="Sleep (hours)" class="flex-1 p-2 border rounded">
+                <input type="number" id="moodRating" placeholder="Mood (1-10)" min="1" max="10" class="flex-1 p-2 border rounded">
+                <button onclick="trackWellness()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors">
+                    Track
+                </button>
+            </div>
+        </div>
+
+        <!-- Wellness Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-2">Water Intake</h3>
+                <p id="waterStat" class="text-3xl font-bold text-blue-600">0</p>
+                <p class="text-gray-600">glasses today</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-2">Sleep Tracking</h3>
+                <p id="sleepStat" class="text-3xl font-bold text-indigo-600">0</p>
+                <p class="text-gray-600">hours last night</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-2">Mood Score</h3>
+                <p id="moodStat" class="text-3xl font-bold text-green-600">0</p>
+                <p class="text-gray-600">average today</p>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold mb-4">Today's Entries</h2>
+            <div id="historyList" class="space-y-4">
+                <!-- Entries will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize stats
+        let waterTotal = 0;
+        let sleepTotal = 0;
+        let moodTotal = 0;
+        let entryCount = 0;
+
+        function trackWellness() {
+            const water = document.getElementById('waterIntake').value;
+            const sleep = document.getElementById('sleepHours').value;
+            const mood = document.getElementById('moodRating').value;
+
+            if (!water || !sleep || !mood) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (mood < 1 || mood > 10) {
+                alert('Mood must be between 1 and 10');
+                return;
+            }
+
+            // Update totals
+            waterTotal = parseInt(water);
+            sleepTotal = parseInt(sleep);
+            moodTotal = parseInt(mood);
+            entryCount++;
+
+            // Update stats display
+            document.getElementById('waterStat').textContent = waterTotal;
+            document.getElementById('sleepStat').textContent = sleepTotal;
+            document.getElementById('moodStat').textContent = mood;
+
+            // Add to history
+            const historyEntry = document.createElement('div');
+            historyEntry.className = 'p-4 border rounded bg-gray-50';
+            historyEntry.innerHTML = `
+                <p class="text-gray-800">
+                    <span class="font-semibold">Water:</span> ${water} glasses | 
+                    <span class="font-semibold">Sleep:</span> ${sleep} hours | 
+                    <span class="font-semibold">Mood:</span> ${mood}/10
+                </p>
+            `;
+            document.getElementById('historyList').prepend(historyEntry);
+
+            // Clear inputs
+            document.getElementById('waterIntake').value = '';
+            document.getElementById('sleepHours').value = '';
+            document.getElementById('moodRating').value = '';
+        }
+    </script>
+</body>
 </html>
