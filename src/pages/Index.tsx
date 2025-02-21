@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -9,9 +8,15 @@ import {
   ChefHat,
   Calculator,
   ArrowRight,
+  Sparkles,
+  Image,
+  Brain,
+  Palette,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { RunwareService } from "@/services/RunwareService";
 
 const FeatureCard = ({
   icon: Icon,
@@ -65,24 +70,44 @@ const features = [
     icon: Calculator,
     title: "Calorie Counter",
     description: "Track your daily calorie intake and set goals",
-    isNew: true,
   },
   {
     icon: Heart,
     title: "Wellness Journal",
     description: "Record your daily wellness activities and mood",
-    isNew: true,
   },
   {
     icon: Leaf,
     title: "Meditation Timer",
     description: "Set timers for your mindfulness practice",
-    isNew: true,
   },
   {
     icon: Scale,
     title: "Progress Tracker",
     description: "Visualize your wellness journey with charts",
+  },
+  {
+    icon: Image,
+    title: "AI Meal Visualization",
+    description: "Generate appetizing images of healthy meals with AI",
+    isNew: true,
+  },
+  {
+    icon: Brain,
+    title: "Smart Meal Planning",
+    description: "Get AI-powered personalized meal suggestions",
+    isNew: true,
+  },
+  {
+    icon: Palette,
+    title: "Wellness Vision Board",
+    description: "Create AI-generated vision boards for motivation",
+    isNew: true,
+  },
+  {
+    icon: Sparkles,
+    title: "AI Wellness Coach",
+    description: "Get personalized wellness advice from AI",
     isNew: true,
   },
 ];
@@ -91,6 +116,10 @@ const Index = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [bmi, setBmi] = useState<number | null>(null);
+  const [apiKey, setApiKey] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const calculateBMI = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,6 +128,32 @@ const Index = () => {
     if (weightNum && heightNum) {
       const bmiValue = weightNum / (heightNum * heightNum);
       setBmi(parseFloat(bmiValue.toFixed(1)));
+    }
+  };
+
+  const generateImage = async () => {
+    if (!apiKey) {
+      toast.error("Please enter your Runware API key");
+      return;
+    }
+
+    if (!prompt) {
+      toast.error("Please enter a prompt");
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const runwareService = new RunwareService(apiKey);
+      const result = await runwareService.generateImage({
+        positivePrompt: prompt,
+      });
+      setGeneratedImage(result.imageURL);
+    } catch (error) {
+      console.error("Error generating image:", error);
+      toast.error("Failed to generate image. Please try again.");
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -200,6 +255,56 @@ const Index = () => {
                 </p>
               </div>
             )}
+          </Card>
+        </div>
+      </section>
+
+      {/* AI Image Generation Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-wellness-forest text-center mb-12">
+            AI-Powered Meal Visualization
+          </h2>
+          <Card className="p-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Runware API Key
+                </label>
+                <Input
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="Enter your Runware API key"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Describe Your Meal
+                </label>
+                <Input
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  placeholder="e.g., A healthy salad with grilled chicken and avocado"
+                />
+              </div>
+              <Button
+                onClick={generateImage}
+                disabled={isGenerating}
+                className="w-full bg-wellness-forest text-white hover:bg-wellness-leaf transition-colors"
+              >
+                {isGenerating ? "Generating..." : "Generate Image"}
+              </Button>
+              {generatedImage && (
+                <div className="mt-4">
+                  <img
+                    src={generatedImage}
+                    alt="Generated meal"
+                    className="w-full h-auto rounded-lg shadow-lg"
+                  />
+                </div>
+              )}
+            </div>
           </Card>
         </div>
       </section>
